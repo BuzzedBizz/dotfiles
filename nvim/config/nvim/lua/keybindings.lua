@@ -27,15 +27,13 @@ local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})   -- files
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})    -- within current directory
                                                             -- could be updated to use grep_string if not available
-vim.keymap.set('n', '<C-f>', '/', {})                       -- search within file
-vim.keymap.set('v', '/', function()
-    local text = vim.getVisualSelection()
-    vim.api.nvim_feedkeys('/' .. text, 'n', true)
-end, {})
-vim.keymap.set('v', '<C-f>', '/', { remap = true })
-
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})      -- open buffers
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})    -- help
+vim.keymap.set('v', '/', function()
+    vim.api.nvim_feedkeys('/' .. vim.getVisualSelection(), 'n', true)
+end, {})
+vim.keymap.set('v', '<C-f>', '/', { remap = true })
+vim.keymap.set('n', '<C-f>', '/', {})                       -- search within file
 
 -- Helper Function to get visual mode selection
 function vim.getVisualSelection()

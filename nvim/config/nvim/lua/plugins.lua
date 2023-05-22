@@ -22,6 +22,9 @@ packer.init({
     autoremove = true,
 })
 
+-- See this for an example structure 
+--  https://github.com/AstroNvim/AstroNvim/blob/main/lua/astronvim/bootstrap.lua
+
 -- Install your plugins here
 packer.startup(function(use)
     -- Have packer manage itself
@@ -43,11 +46,21 @@ packer.startup(function(use)
     -- LSP tools
     use 'simrat39/rust-tools.nvim'      -- Rust setup package
     use 'p00f/clangd_extensions.nvim'   -- clangd setup package
-    use 'folke/trouble.nvim'            -- displays diagnosticks a little nicer
+    use {
+        'folke/trouble.nvim',           -- displays diagnosticks a little nicer
+        config = function() 
+            require("plugins.trouble").setup()
+        end
+    }
     use 'VonHeikemen/lsp-zero.nvim'     -- common tools/functions for lsp
 
     -- Completion and suggestions
-    use 'hrsh7th/nvim-cmp'                      -- framework
+    use {
+        'hrsh7th/nvim-cmp',                     -- framework
+        config = function() 
+            require("plugins.nvim-cmp").setup()
+        end
+    }
     use 'hrsh7th/cmp-nvim-lsp'                  -- lsp completion
     use 'hrsh7th/cmp-nvim-lua'                  -- custom lua completion (for terminal mode)
     use 'hrsh7th/cmp-nvim-lsp-signature-help'   -- Emphasizes current param when calling functions
@@ -63,6 +76,9 @@ packer.startup(function(use)
             local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
             ts_update()
         end,
+        config = function() 
+            require("plugins.nvim-treesitter").setup()
+        end
     }
 
     -- Formatting
@@ -70,15 +86,43 @@ packer.startup(function(use)
     -- TODO 'jose-elias-alvarez/null-ls.nvim'
 
     -- Workspace Packages
-    use { 'ms-jpq/chadtree', run=':CHADdeps' }  -- Show File Tree
-    use 'ethanholz/nvim-lastplace'              -- Saves buffer history
+    use {
+        'ms-jpq/chadtree',                      -- Show File Tree
+        run=':CHADdeps',
+        config = function() 
+            require("plugins.chadtree").setup()
+        end
+    }
+    use {
+        'ethanholz/nvim-lastplace',             -- Saves buffer history
+        config = function() 
+            require("plugins.nvim-lastplace").setup()
+        end
+    }
 
     -- UI Packages
     use 'mhinz/vim-startify'                    -- Home screen
-    use 'nvim-lualine/lualine.nvim'             -- Status Line
-    use 'tanvirtin/monokai.nvim'                -- ColorScheme
+    use {
+        'nvim-lualine/lualine.nvim',            -- Status Line
+        config = function() 
+            require("plugins.lualine").setup()
+        end
+    }
+    use {
+        'tanvirtin/monokai.nvim',               -- ColorScheme
+        config = function()
+            require("plugins.monokai").setup()
+        end
+    }
     use 'LukasPietzschmann/telescope-tabs'      -- Shows tabs in a telescope window
-    use 'willothy/nvim-cokeline'                -- Tab Line
+    -- look into https://github.com/tiagovla/scope.nvim
+    -- maybe use https://www.reddit.com/r/neovim/comments/11itoab/how_do_you_manage_tabs_and_split_panes_in_vim/
+    use {
+        'willothy/nvim-cokeline',               -- Tab Line
+        config = function() 
+            require("plugins.cokeline").setup()
+        end
+    }
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

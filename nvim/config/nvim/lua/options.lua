@@ -26,7 +26,7 @@ vim.opt.cursorline=true
 -- Show the tabline everywhere
 vim.opt.showtabline=2
 
--- Show line numbers
+-- Show linewinbufnr(winnr('#'))winbufnr(winnr('#')) numbers
 vim.opt.number=true
 
 -- Show vim command autocomplete menup
