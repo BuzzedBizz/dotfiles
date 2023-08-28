@@ -23,10 +23,7 @@ vim.opt.clipboard="unnamedplus"
 -- Highlight current line
 vim.opt.cursorline=true
 
--- Show the tabline everywhere
-vim.opt.showtabline=2
-
--- Show linewinbufnr(winnr('#'))winbufnr(winnr('#')) numbers
+-- Show line numbers
 vim.opt.number=true
 
 -- Show vim command autocomplete menup

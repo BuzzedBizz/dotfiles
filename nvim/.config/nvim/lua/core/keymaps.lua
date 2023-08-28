@@ -16,9 +16,6 @@ vim.keymap.set('n', '<leader>hs', ':split<CR>', {})
 -- Escape will turn terminal into normal mode
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', {})
 
--- CHADTree Binding
-vim.keymap.set('n', '<leader>ct', ':CHADopen<CR>', {})
-
 -- Alt+v is now Ctrl-v
 vim.keymap.set('n', '<A-v>', '<C-v>', {})
 

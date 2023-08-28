@@ -1,9 +1,7 @@
-local M = {}
-M.methods = {}
-
-function M.setup()
-    -- Setup Lsp UI for diagnostics
-    require("trouble").setup {
+return {
+    -- Error message handler
+    "folke/trouble.nvim",
+    opts = {
         icons = false,
         fold_open = "v", -- icon used for open folds
         fold_closed = ">", -- icon used for closed folds
@@ -17,6 +15,4 @@ function M.setup()
         },
         use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
     }
-end
-
-return M
+}

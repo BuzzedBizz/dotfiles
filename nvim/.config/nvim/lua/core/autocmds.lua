@@ -1,5 +1,13 @@
 vim.api.nvim_create_augroup('bufcheck', { clear = true })
 
+-- Reopen buffers to last known location
+vim.api.nvim_create_autocmd({'BufWinEnter'}, {
+  group = 'bufcheck',
+  desc = 'return cursor to where it was last time closing the file',
+  pattern = '*',
+  command = 'silent! normal! g`"zv',
+})
+
 -- start terminal in insert mode
 vim.api.nvim_create_autocmd('TermOpen', {
     group    = 'bufcheck',
@@ -50,5 +58,17 @@ vim.api.nvim_create_autocmd('BufWritePre', {
     group = 'bufcheck',
     pattern = "*",
     command = "%s/\\s\\+$//e"
+})
+
+-- Highlight yanked text
+vim.api.nvim_create_autocmd('TextYankPost', {
+    group = 'bufcheck',
+    pattern = '*',
+    callback = function()
+        vim.highlight.on_yank({
+            higroup = 'IncSearch',
+            timeout = 40,
+        })
+    end,
 })
 

@@ -1,2 +1,2 @@
 # Copy everything in ./config into the .config directory
-cp -RT ./config/ ~/.config
+cp -RT ./.config/ ~/.config
