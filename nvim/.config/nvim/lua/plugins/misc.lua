@@ -31,5 +31,38 @@ return {
             lastplace_ignore_filetype = { "gitcommit", "gitrebase" },
             lastplace_open_folds = true
         }
-    }
+    },
+
+    -- Better Diff Views
+    {
+        "sindrets/diffview.nvim",
+        cmd = { "DiffViewOpen", "DiffViewClose", "DiffViewToggleFiles", "DiffViewFocusFiles" },
+        config = true,
+        opts = {
+            use_icons = true, -- this overrides with the stuff below
+            icons = {
+                folder_closed = "▶",
+                folder_open = "▼",
+            },
+            signs = {
+                fold_closed = "",
+                fold_open = ""
+            }
+        },
+        dependencies = { 'nvim-tree/nvim-web-devicons' }
+    },
+
+    {
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {
+            sign = false,
+            highlight = {
+                pattern = [[.*<(KEYWORDS)\s*]]
+            }
+        }
+    },
+
+    -- "kevinhwuang91/nvim-ufo", -- for better folding
+    -- "ibhagwan/fzf-lua"
 }

@@ -3,6 +3,49 @@ return {
     { 'simrat39/rust-tools.nvim' },      -- Rust setup package
     { 'p00f/clangd_extensions.nvim' },   -- clangd setup package
 
+    -- Document Generator
+    {
+        "danymat/neogen",
+        opts = { snippet_engine = "luasnip" },
+        keys = {
+            {
+                "<leader>cc",
+                function()
+                    require("neogen").generate({})
+                end,
+                desc = "Neogen Comment",
+            },
+        },
+        cmd = "Neogen",
+        requires = "nvim-treesitter/nvim-treesitter",
+    },
+
+    -- Allows renaming of things
+    {
+        "smjonas/inc-rename.nvim",
+        cmd = "IncRename",
+        config = true,
+    },
+
+    -- ALlows extraction of stuff (e.g. to another file)
+    -- TODO we can use telescope for this
+    {
+        "ThePrimeagen/refactoring.nvim",
+        keys = {
+            {
+                "<leader>r",
+                function()
+                    require("refactoring").select_refactor()
+                end,
+                mode = "v",
+                noremap = true,
+                silent = true,
+                expr = false,
+            }
+        },
+        opts = {},
+    },
+
     -- Autocompletion
     {
         'hrsh7th/nvim-cmp',
@@ -20,6 +63,7 @@ return {
             -- Snippets engine
             {'L3MON4D3/LuaSnip'},
         },
+        lazy = false,
         config = function()
             -- And you can configure cmp even more, if you want to.
             local cmp = require('cmp')
@@ -95,47 +139,55 @@ return {
             {'hrsh7th/cmp-nvim-lsp'},
         },
         config = function()
-            lsp.on_attach(function(client, bufnr)
-                -- see :help lsp-zero-keybindings
-                -- to learn the available actions
-                lsp.default_keymaps({buffer = bufnr})
-            end)
+            -- require('lspconfig').lua_ls.setup(vim.lsp.nvim_lua_ls())
+            lspconfig = require('lspconfig')
 
-            require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
-
-            -- Do setup for our language servers
-            local handlers = {
-                -- Default Setup For un-specialized lsps
-                function (server_name) -- default handler (optional)
-                    require("lspconfig")[server_name].setup {}
+            -- Do the setup/installation
+            lspconfig['clangd'].setup({
+                on_attach = function(client, bufnr)
+                    -- do_on_attach_fns(client, bufnr, true)
+                    require('clangd_extensions.inlay_hints').setup_autocmd()
+                    require('clangd_extensions.inlay_hints').set_inlay_hints()
                 end,
+                cmd = {
+                    -- TODO Finish this
+                    'clangd',
+                    -- '--background-index',
+                    -- '--clang-tidy',
+                    '--completion-style=bundled',
+                    -- '--cross-file-rename',
+                    '--all-scopes-completion',
+                    -- '--log=error',
+                    '--suggest-missing-includes',
+                    '--pch-storage=memory',
+                },
+                init_options = {
+                    clangdFileStatus = true,
+                    usePlaceholders = true,
+                    completeUnimported = true,
+                    semanticHighlighting = true,
+                },
+                capabilities = client_capabilities,
+            })
 
-                -- clangd Handler
-                ["clangd"] = function ()
-                    require("clangd_extensions").setup()
-                end,
-
-                -- Python Handler
-                ["pylsp"] = function ()
-                    require("lspconfig")['pylsp'].setup({
+            -- Python Handler
+            lspconfig["pylsp"].setup({
+                settings = {
+                    pylsp = {
                         plugins = {
                             pycodestyle = {
+                                ignore = {'W391'},
                                 maxLineLength = 120
                             }
                         }
-                    })
-                end,
+                    }
+                }
+            })
 
-                -- Rust Handler
-                ["rust_analyzer"] = function ()
-                    require("rust-tools").setup {}
-                end,
-            }
-
-            -- Do the setup/installation
-            handlers["clangd"]()
-            handlers["pylsp"]()
-            handlers["rustanalyzer"]()
+            -- Rust Handler
+            lspconfig["rust_analyzer"] = function ()
+                require("rust-tools").setup({})
+            end
         end
     },
 }

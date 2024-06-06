@@ -20,12 +20,13 @@ vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', {})
 vim.keymap.set('n', '<A-v>', '<C-v>', {})
 
 -- Search
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})   -- files
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})    -- within current directory
-                                                            -- could be updated to use grep_string if not available
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})      -- open buffers
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})    -- help
+-- local builtin = require('telescope.builtin')
+-- vim.keymap.set('n', '<leader>ff', builtin.find_files, {})   -- files
+-- vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})    -- within current directory
+--                                                             -- could be updated to use grep_string if not available
+-- vim.keymap.set('n', '<leader>fb', builtin.buffers, {})      -- open buffers
+-- vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})    -- help
+
 vim.keymap.set('v', '/', function()
     vim.api.nvim_feedkeys('/' .. vim.getVisualSelection(), 'n', true)
 end, {})
@@ -72,12 +73,12 @@ vim.o.inccommand = "split"
 
 -- Trouble Keybindings
 -- Keeping these as some still work even if no lsp is on
-vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>", {})
-vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", {})
-vim.keymap.set("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", {})
-vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", {})
-vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", {})
-vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", {})
+-- vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>", {})
+-- vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", {})
+-- vim.keymap.set("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", {})
+-- vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", {})
+-- vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", {})
+-- vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", {})
 
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
