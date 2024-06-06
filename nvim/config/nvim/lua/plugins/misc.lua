@@ -56,7 +56,7 @@ return {
         "folke/todo-comments.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {
-            sign = false,
+            signs = false,
             highlight = {
                 pattern = [[.*<(KEYWORDS)\s*]]
             }
