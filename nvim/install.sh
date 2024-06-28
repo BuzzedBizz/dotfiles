@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-set -xe
+set -e
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
-cp -RT "${SCRIPT_DIR}/config" ~/.config
+mkdir -p $XDG_CONFIG_HOME
+ln -sf $DOTFILES/nvim/nvim_config $XDG_CONFIG_HOME/nvim
 

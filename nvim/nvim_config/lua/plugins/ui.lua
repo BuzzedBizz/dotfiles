@@ -1,10 +1,12 @@
 return {
     {
         -- Home Screen
-        'mhinz/vim-startify'
+        'mhinz/vim-startify',
+        -- TODO this isn't detecting the filetype on initial startup, so we have no colours
     },
     {
-        "tanvirtin/monokai.nvim", -- ColourScheme
+        -- ColourScheme
+        "tanvirtin/monokai.nvim",
         init = function()
             require("monokai").setup({
                 palette = require("monokai").ristretto
