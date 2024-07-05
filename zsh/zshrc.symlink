@@ -1,6 +1,13 @@
 # This is the absolute path to this repo's root directory
 export DOTFILES="$(realpath ${0:A:h}/..)"
 
+# Put all extra setup in the localrc
+# E.g. setting env variables not relevant to this repo
+if [[ -a ~/.localrc ]]
+then
+  source ~/.localrc
+fi
+
 # all of our zsh files
 typeset -U config_files
 config_files=($DOTFILES/**/*.zsh)
@@ -28,3 +35,4 @@ do
 done
 
 unset config_files
+
