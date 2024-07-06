@@ -36,7 +36,7 @@ return {
     -- Better Diff Views
     {
         "sindrets/diffview.nvim",
-        cmd = { "DiffViewOpen", "DiffViewClose", "DiffViewToggleFiles", "DiffViewFocusFiles" },
+        cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
         config = true,
         opts = {
             use_icons = true, -- this overrides with the stuff below

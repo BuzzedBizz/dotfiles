@@ -3,5 +3,5 @@
 set -e
 
 mkdir -p $XDG_CONFIG_HOME
-ln -sf $DOTFILES/tig/tig_config $XDG_CONFIG_HOME/tig
+ln -sfT $DOTFILES/tig/tig_config $XDG_CONFIG_HOME/tig
 

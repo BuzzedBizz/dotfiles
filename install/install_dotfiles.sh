@@ -6,7 +6,6 @@ set -e
 
 # This is the absolute path to this repo's root directory
 DOTFILES="$(realpath ${0:A:h}/..)"
-echo $DOTFILES
 
 # Doing this now so that env is all set up properly when we install things
 source $DOTFILES/zsh/zshrc.symlink
@@ -98,6 +97,7 @@ link_file () {
     fi
 }
 
+info "Installing ${DOTFILES}"
 
 # Link all the symlinks
 for src in $(find -H "$DOTFILES" -maxdepth 2 -name '*.symlink' -not -path '*.git*') ; do
