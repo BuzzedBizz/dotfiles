@@ -45,9 +45,9 @@ link_file () {
                 skip=true;
             else
 
-                user "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
+                echo "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
                 [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
-                read -n 1 action
+                read -k 1 action
 
                 case "$action" in
                   o )
