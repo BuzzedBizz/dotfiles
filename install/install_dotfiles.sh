@@ -2,7 +2,6 @@
 
 # Installing all the dotfiles in this repo
 # Won't install any dpkgs or other software
-set -e
 
 # This is the absolute path to this repo's root directory
 DOTFILES="$(realpath ${0:A:h}/..)"

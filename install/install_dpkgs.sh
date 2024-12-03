@@ -14,6 +14,3 @@ for src in $(find -H "$SCRIPT_DIR/.." -maxdepth 2 -name 'dpkg-dependencies.txt' 
     echo "Installing packages in ${src}"
     cat $src | xargs sudo apt install -y
 done
-
-# TODO what about apk dependencies?
-

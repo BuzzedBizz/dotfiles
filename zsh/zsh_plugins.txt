@@ -1,0 +1,24 @@
+# Zsh plugin utilities
+romkatv/zsh-defer # Lazy loading
+romkatv/zsh-bench kind:path # profiling
+
+# Prompt and colours
+chrissicool/zsh-256color # sets proper color term env variables
+mattmc3/zephyr path:plugins/color
+p1r473/zsh-color-logging
+unixorn/warhol.plugin.zsh
+
+# Standard Environment and utils
+zpm-zsh/clipboard # Needs to go before plugins/utility. Could also be
+                  # ohmyzsh/ohmyzsh path:lib/clipboard.zsh
+mattmc3/zephyr path:plugins/environment
+mattmc3/zephyr path:plugins/utility
+
+# History
+mattmc3/zephyr path:plugins/history
+
+# Autocompletions
+zsh-users/zsh-completions
+mattmc3/zephyr path:plugins/completion
+zsh-users/zsh-autosuggestions kind:defer
+zsh-users/zsh-syntax-highlighting kind:defer # This needs to be the last bundle

@@ -18,7 +18,7 @@ vim.opt.rtp:prepend(lazypath)
 return function(opts)
     -- This allows us to override options given to us
     opts = vim.tbl_deep_extend("force", {
-	ui = {
+    ui = {
             icons = {
                 cmd = "⌘",
                 config = "🛠",

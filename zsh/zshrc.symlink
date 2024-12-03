@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # This is the absolute path to this repo's root directory
 export DOTFILES="$(realpath $(dirname $(readlink -f ${(%):-%x}))/..)"
 
@@ -19,26 +21,27 @@ else
 fi
 
 # load the path files
-for file in ${(M)config_files:#*/path.zsh}
-do
+for file in ${(M)config_files:#*/path.zsh} ; do
     source $file
 done
 
 # load everything but the path and completion files
-for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}
-do
+for file in ${${config_files:#*/path.zsh}:#*/completion.zsh} ; do
     source $file
 done
 
-# initialize autocomplete here, otherwise functions won't be loaded
-autoload -U compinit
-compinit -u
+# Load antidote and plugins
+[[ -e ${XDG_CACHE_HOME}/.antidote ]] ||
+    git clone --depth=1 https://github.com/mattmc3/antidote.git ${XDG_CACHE_HOME}/.antidote
+
+source ${XDG_CACHE_HOME}/.antidote/antidote.zsh
+antidote load "${DOTFILES}/zsh/zsh_plugins.txt" "${XDG_CACHE_HOME}/.zsh_plugins.zsh"
 
 # load every completion after autocomplete loads
-for file in ${(M)config_files:#*/completion.zsh}
-do
-  source $file
+for file in ${(M)config_files:#*/completion.zsh} ; do
+    source $file
 done
 
 unset config_files
 
+eval "$(starship init zsh)"

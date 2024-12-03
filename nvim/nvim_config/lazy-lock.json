@@ -13,7 +13,7 @@
   "hardtime.nvim": { "branch": "main", "commit": "9a4e24fb40482dc85a93bf6cf344a030b9bf9a39" },
   "inc-rename.nvim": { "branch": "main", "commit": "8ba77017ca468f3029bf88ef409c2d20476ea66b" },
   "indent-blankline.nvim": { "branch": "master", "commit": "65e20ab94a26d0e14acac5049b8641336819dfc7" },
-  "lazy.nvim": { "branch": "main", "commit": "0ff7e83c17c6eef181116954761ee8ed84db88a7" },
+  "lazy.nvim": { "branch": "main", "commit": "7967abe55752aa90532e6bb4bd4663fe27a264cb" },
   "lualine.nvim": { "branch": "master", "commit": "0a5a66803c7407767b799067986b4dc3036e1983" },
   "monokai.nvim": { "branch": "master", "commit": "b8bd44d5796503173627d7a1fc51f77ec3a08a63" },
   "neogen": { "branch": "main", "commit": "6de0add4805165317ab7d3d36b5cef48b1b865f3" },

@@ -1,0 +1,85 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = true
+command_timeout = 2000
+
+format = """
+$username\
+    $hostname\
+    [](fg:color_light_fg bg:color_dark_bg)\
+    $directory\
+    [](bg:color_light_bg fg:color_dark_bg)\
+    $git_branch\
+    $git_metrics\
+    [](fg:color_light_fg bg:color_dark_fg)\
+    $fill\
+    [](fg:color_dark_bg bg:color_dark_fg)\
+    ${time}\
+    [](fg:color_light_fg bg:color_dark_bg)\
+    ${custom.date}
+$character
+"""
+
+palette = 'gold'
+
+[palettes.gold]
+color_light_bg = '#ffb86c'
+color_light_fg = '#ffb86c'
+color_dark_bg = '#3a3a3a'
+color_dark_fg = '#262626'
+
+# Shows the username
+[username]
+show_always = true
+style_user = "bg:color_light_bg fg:color_dark_fg"
+style_root = "bg:color_light_bg fg:color_dark_fg"
+format = '[  $user]($style)'
+
+# Shows the hostname
+[hostname]
+disabled = false
+ssh_only = false
+format = '[@$hostname ]($style)'
+style = 'bg:color_light_bg fg:color_dark_fg'
+
+# Shows current directory
+[directory]
+truncation_length = 0
+truncation_symbol = '…/'
+truncate_to_repo = true
+home_symbol = '~'
+read_only = ' '
+format = '[ $path ]($style)[$read_only]($style)'
+style = 'bg:color_dark_bg fg:color_light_fg'
+
+# Shows current git branch
+[git_branch]
+symbol = ""
+style = 'bg:color_light_bg fg:color_dark_fg'
+format = '[ $symbol $branch ]($style)'
+
+[git_metrics]
+disabled = false
+format = '[+$added/-$deleted ](bg:color_light_bg fg:color_dark_fg)'
+
+[fill]
+symbol = ' '
+style = 'bg:color_dark_fg'
+
+[time]
+disabled = false
+time_format = " %T"
+style = 'fg:color_light_fg bg:color_dark_bg'
+format = "[ $time ]($style)"
+
+[custom.date]
+when = true
+command = 'date +"%F"'
+style = 'bg:color_light_bg fg:color_dark_fg'
+format = "[  $output ]($style)"
+
+[character]
+success_symbol = "█ "
+error_symbol = "█ "
+format = "[$symbol](fg:color_light_fg)"
