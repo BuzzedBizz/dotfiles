@@ -1,0 +1,35 @@
+[org.gnome.mutter]
+center-new-windows=true
+
+[org.gnome.desktop.wm.preferences]
+auto-raise=true
+focus-new-windows='smart'
+audible-bell=false
+
+[org.gnome.desktop.interface]
+clock-show-seconds=true
+clock-format='24h'
+clock-show-weekday=false
+
+[org.gnome.settings-daemon.plugins.color]
+night-light-enabled=true
+
+# Logo on background
+[org.fedorahosted.background-logo-extension]
+logo-always-visible=true
+logo-border=uint32 50
+logo-file='/usr/share/fedora-logos/fedora_lightbackground.svg'
+logo-file-dark='/usr/share/fedora-logos/fedora_darkbackground.svg'
+logo-opacity=uint32 255
+logo-position='bottom-right'
+logo-size=11.5
+
+# Background image
+[org.gnome.desktop.background]
+color-shading-type='solid'
+picture-options='zoom'
+picture-uri='file:///usr/share/backgrounds/gnome/amber-l.jxl'
+picture-uri-dark='file:///usr/share/backgrounds/gnome/amber-d.jxl'
+primary-color='#ff7800'
+secondary-color='#000000'
+

@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+name: os-image
+description: Custom fedora atomic image
+
+base-image: ghcr.io/blue-build/base-images/fedora-silverblue-nvidia-open
+image-version: 44
+
+modules:
+  - type: files
+    files:
+      - source: system
+        destination: /
+
+  - type: dnf
+    install:
+      packages:
+        - cargo
+        - kitty
+        - libgtop2-devel
+        - lm_sensors
+        - neovim
+        - openssl
+        - rclone
+        - ripgrep
+        - rustup
+        - zsh
+    remove:
+      packages:
+        - firefox
+        - firefox-langpacks
+        - gnome-system-monitor
+        - gnome-tour
+        - malcontent-control
+        - yelp
+
+  - type: default-flatpaks
+    configurations:
+      - scope: system
+        install:
+          - com.bitwarden.desktop
+          - com.discordapp.Discord
+          - com.github.tchx84.Flatseal
+          - com.saivert.pwvucontrol
+          - com.spotify.Client
+          - com.usebottles.bottles
+          - dev.qwery.AddWater
+          - io.github.benjamimgois.goverlay # configure overlay
+          - io.missioncenter.MissionCenter
+          - org.freedesktop.Platform.VulkanLayer.MangoHud//25.08 # overlay
+          - org.freedesktop.Platform.VulkanLayer.vkBasalt//25.08 # draws the overlay
+          - org.gnome.Boxes
+          - org.gnome.Calendar
+          - org.gnome.Evolution
+          - org.gnome.Extensions
+          - org.mozilla.firefox
+          - org.openrgb.OpenRGB
+
+  # default-flatpaks doesn't let me change the default permissions
+  # which we need for some things to work
+  - type: script
+    snippets:
+      - flatpak override com.valvesoftware.Steam --filesystem=host
+    scripts:
+      - openrgb-udev.sh
+
+  - type: brew
+    nofile-limits: true
+    brew-analytics: false
+    auto-upgrade: true
+    auto-update: true
+
+  - type: gnome-extensions
+    install:
+      - 779 # Clipboard Indicator
+      - Blur my Shell
+      - Burn My Windows
+      - Display Configuration Switcher
+      - Just Perfection
+      - Vitals
+      - Quick Settings Audio Devices Hider
+
+  - type: gnome-extensions-unverified
+    source: local
+    install:
+      - 4928 # Media Label and Controls (Mpris Label)
+      - Another Window Session Manager
+
+  - type: kargs
+    kargs:
+      - pcie_aspm.policy=performance
+      - pcie_port_pm=off
+
+  - type: gschema-overrides
+    include:
+      - zz1-gnome.gschema.override
+
+  - type: fonts
+    fonts:
+      nerd-fonts:
+        - CascadiaCode
+        - Ubuntu
+
+  - type: chezmoi
+    repository: "https://github.com/BuzzedBizz/dotfiles"
+
+  # Do I really need to sign things?
+  - type: signing
+
