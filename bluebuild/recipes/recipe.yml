@@ -92,6 +92,8 @@ modules:
       - pcie_aspm=off
       - pcie_aspm.policy=performance
       - pcie_port_pm=off
+      - nvidia_drm.modeset=1
+      - nvidia_drm.fbdev=1
 
   - type: gschema-overrides
     include:
