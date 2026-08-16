@@ -13,6 +13,8 @@ modules:
         destination: /
 
   - type: dnf
+    repos:
+      nonfree: negativo17
     install:
       packages:
         - cargo
@@ -24,6 +26,7 @@ modules:
         - rclone
         - ripgrep
         - rustup
+        - steam
         - zsh
     remove:
       packages:
@@ -60,8 +63,6 @@ modules:
   # default-flatpaks doesn't let me change the default permissions
   # which we need for some things to work
   - type: script
-    snippets:
-      - flatpak override com.valvesoftware.Steam --filesystem=host
     scripts:
       - openrgb-udev.sh
 
