@@ -48,6 +48,7 @@ modules:
           - io.github.benjamimgois.goverlay # configure overlay
           - io.missioncenter.MissionCenter
           - org.freedesktop.Platform.VulkanLayer.MangoHud//25.08 # overlay
+          - org.freedesktop.Platform.VulkanLayer.gamescope//25.08
           - org.freedesktop.Platform.VulkanLayer.vkBasalt//25.08 # draws the overlay
           - org.gnome.Boxes
           - org.gnome.Calendar
@@ -88,6 +89,7 @@ modules:
 
   - type: kargs
     kargs:
+      - pcie_aspm=off
       - pcie_aspm.policy=performance
       - pcie_port_pm=off
 
