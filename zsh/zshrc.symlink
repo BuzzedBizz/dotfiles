@@ -3,6 +3,27 @@
 # This is the absolute path to this repo's root directory
 export DOTFILES="$(realpath $(dirname $(readlink -f ${(%):-%x}))/..)"
 
+# Enable Powerlevel10k instant prompte. Should stay close to the top of ~/.zshrc
+# Initialization code that may require console input (password promps, [y/n],
+# confirmations, etc.) must go above this block; everything else may go below
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+setopt null_glob
+setopt extended_glob
+
+#DEBUG_PRINT=true
+debug_print() {
+    if (( ${+DEBUG_PRINT} )); then
+        printf "$1\n"
+    fi
+}
+
+# Hack because windows terminal doesn't set it although it supports it
+# see https://github.com/microsoft/terminal/issues/11057
+export COLORTERM=truecolor
+
 # Put all extra setup in the localrc
 # E.g. setting env variables not relevant to this repo
 if [[ -a ~/.localrc ]]
@@ -10,38 +31,60 @@ then
     source ~/.localrc
 fi
 
-# all of our zsh files
-typeset -U config_files
-if [[ $DOTFILES -ef $(realpath ~)/.zshrc ]]; then
-    # Not going to run if zsh no longer points to the dotfiles repo
-    echo "Installation error. zshrc not symlinked"
-    config_files=
-else
-    config_files=($DOTFILES/**/*.zsh)
+# Assign a default TMPDIR if one doesn't exist
+if [[ -z ${TMPDIR+x} ]]; then
+    debug_print "Setting TMPDIR to /tmp"
+    export TMPDIR=/tmp
 fi
 
-# load the path files
-for file in ${(M)config_files:#*/path.zsh} ; do
+if [[ $DOTFILES -ef $(realpath ~/).zshrc ]]; then
+    # We expect zshrc to be simlinked to this file. If it's not we have big problems
+    echo "Installation error. zshrc not symlinked"
+    return 0
+fi
+
+# Apply .env files
+for file in ${DOTFILES}/**/env ; do
+    debug_print "Loading env from file ${file}"
     source $file
 done
 
-# load everything but the path and completion files
-for file in ${${config_files:#*/path.zsh}:#*/completion.zsh} ; do
+# Apply PATH files
+for file in ${DOTFILES}/**/path.zsh ; do
+    debug_print "Loading path from file ${file}"
     source $file
 done
+
+# Load all remaining files *.zsh files except for the path files already loaded
+for file in ${DOTFILES}/**/*.zsh ; do
+    debug_print "Loading zsh setup file  ${file}"
+    source $file
+done
+
+mkdir -p ${XDG_CACHE_HOME}
 
 # Load antidote and plugins
-[[ -e ${XDG_CACHE_HOME}/.antidote ]] ||
-    git clone --depth=1 https://github.com/mattmc3/antidote.git ${XDG_CACHE_HOME}/.antidote
+if [ ! -e ${XDG_CACHE_HOME}/antidote/antidote.zsh ]; then
+    echo "Could not find antidote. Cloning to ${XDG_CACHE_HOME}/antidote"
+    # This is needed in case I install plugins but antidate has already been cleared
+    rm -rf ${XDG_CACHE_HOME}/antidote
+    git clone --depth=1 --quiet https://github.com/mattmc3/antidote.git ${XDG_CACHE_HOME}/antidote
+fi
 
-source ${XDG_CACHE_HOME}/.antidote/antidote.zsh
-antidote load "${DOTFILES}/zsh/zsh_plugins.txt" "${XDG_CACHE_HOME}/.zsh_plugins.zsh"
+debug_print "Initializing Antidote"
+source ${XDG_CACHE_HOME}/antidote/antidote.zsh
+antidote load "${DOTFILES}/zsh/zsh_plugins.txt" "${XDG_CACHE_HOME}/zsh_plugins.zsh"
 
-# load every completion after autocomplete loads
-for file in ${(M)config_files:#*/completion.zsh} ; do
-    source $file
-done
+# Initialize zsh completiogs for speed
+autoload -Uz compinit
+compinit -C # skip security check, use cache
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME}/zsh/cache"
 
-unset config_files
+# Disable pathdirs to avoid zsh searching $PATH for every command
+# Need to do it here because some plugins (e.g. zsh-completions) re-enable it
+unsetopt pathdirs
 
-eval "$(starship init zsh)"
+# To customize promet, run `p10k configure` or edit ~/.p10k.zsh
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+

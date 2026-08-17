@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+# Refresh the DISPLAY environment variable from tmux so on reconnect we have the correct value
+tmux_env_update() {
+    if [ -n "$TMUX" ]; then
+        eval "$(tmux show-environment -g 2>/dev/null | grep -E '^(DISPLAY)=')"
+    fi
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd tmux_env_update

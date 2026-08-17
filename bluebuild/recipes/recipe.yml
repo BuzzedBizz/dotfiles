@@ -26,7 +26,6 @@ modules:
         - rclone
         - ripgrep
         - rustup
-        - steam
         - zsh
     remove:
       packages:
@@ -47,12 +46,14 @@ modules:
           - com.saivert.pwvucontrol
           - com.spotify.Client
           - com.usebottles.bottles
+          - com.valvesoftware.Steam
           - dev.qwery.AddWater
           - io.github.benjamimgois.goverlay # configure overlay
-          - io.missioncenter.MissionCenter
           - org.freedesktop.Platform.VulkanLayer.MangoHud//25.08 # overlay
           - org.freedesktop.Platform.VulkanLayer.gamescope//25.08
           - org.freedesktop.Platform.VulkanLayer.vkBasalt//25.08 # draws the overlay
+          - io.missioncenter.MissionCenter
+          - net.lutris.Lutris
           - org.gnome.Boxes
           - org.gnome.Calendar
           - org.gnome.Evolution

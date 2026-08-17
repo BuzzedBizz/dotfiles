@@ -3,9 +3,10 @@ romkatv/zsh-defer # Lazy loading
 romkatv/zsh-bench kind:path # profiling
 
 # Prompt and colours
+romkatv/powerlevel10k
 chrissicool/zsh-256color # sets proper color term env variables
 mattmc3/zephyr path:plugins/color
-p1r473/zsh-color-logging
+zpm-zsh/colorize
 unixorn/warhol.plugin.zsh
 
 # Standard Environment and utils

@@ -1,3 +1,5 @@
+# This isn't a symlink because my name and email get put in this file
+# If it were then it would get put in here on setup
 [alias]
     ac = !git add -A && git commit
     a = add
@@ -15,19 +17,23 @@
 [core]
     excludesfile = ~/.gitignore_global
     editor = nvim
+    autocrlf = input
+[push]
+    autoSetupRemote = true
 [diff]
     tool = nvimdiff
+    guitool = nvimdiff
 [difftool]
     prompt = false
 [difftool "nvimdiff"]
     path = nvim
 [merge]
-    tool = nvim
+    tool = nvimdiff
+    conflictstyle = diff3
 [mergetool]
     prompt = false
     keepBackup = false
     trustExitCode = false
 [mergetool "nvimdiff"]
     path = nvim
-[init]
-    defaultBranch = main
+    layout = LOCAL,MERGED,REMOTE

@@ -1,0 +1,4 @@
+export XDG_CONFIG_HOME=~/.config
+export XDG_DATA_HOME=$TMPDIR/cbissett2/.local/share
+export XDG_STATE_HOME=$TMPDIR/cbissett2/.local/state
+export XDG_CACHE_HOME=$TMPDIR/cbissett2/.local/cache

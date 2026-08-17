@@ -1,7 +1,0 @@
-bat
-fzf
-jid
-jq
-ripgrep
-tree
-x11-apps

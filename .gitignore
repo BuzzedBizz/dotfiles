@@ -1,5 +1,7 @@
+.vscode
+
+# bluebird files that may be added
 **/cosign.key
 **/cosign.private
-**/Containerfile
 **/*.iso
 **/*.iso-CHECKSUM

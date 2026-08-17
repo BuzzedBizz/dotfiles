@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Load antidote and plugins
+if [ ! -e ${XDG_CONFIG_HOME}/tmux/plugins/tpm ]; then
+    echo "Could not find tmux plugin manager. Cloning to ${XDG_CONFIG_HOME}/tmux/plugins/tpm"
+    git clone --depth=1 --quiet https://github.com/tmux-plugins/tpm ${XDG_CONFIG_HOME}/tmux/plugins/tpm
+fi

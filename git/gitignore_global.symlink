@@ -14,3 +14,9 @@ logs
 .clangd
 linux-gcc-x64
 build
+compile_commands.json
+
+# Claude Code local configuration and memory
+.claude/settings.local.json
+.claude/worktrees
+CLAUDE.local.md
