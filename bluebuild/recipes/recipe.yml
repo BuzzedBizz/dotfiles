@@ -14,18 +14,26 @@ modules:
 
   - type: dnf
     repos:
+      # Installing steam through dnf instead of flatpak because it often has
+      # version incompatiblities with the system mesa and the flatpak mesa
+      # This causes steam and games to render with llvmpipe
       nonfree: negativo17
     install:
+      install-weak-deps: false
       packages:
         - cargo
+        - gamescope
+        - kernel-modules-extra
         - kitty
         - libgtop2-devel
         - lm_sensors
+        - mangohud
         - neovim
         - openssl
         - rclone
         - ripgrep
         - rustup
+        - steam
         - zsh
     remove:
       packages:
