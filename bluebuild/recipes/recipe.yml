@@ -12,6 +12,30 @@ modules:
       - source: system
         destination: /
 
+  - type: fonts
+    fonts:
+      nerd-fonts:
+        - CascadiaCode
+        - Ubuntu
+
+  - type: kargs
+    kargs:
+      - pcie_aspm=off
+      - pcie_aspm.policy=performance
+      - pcie_port_pm=off
+      - nvidia_drm.modeset=1
+      - nvidia_drm.fbdev=1
+
+  - type: gschema-overrides
+    include:
+      - zz1-gnome.gschema.override
+
+  - type: brew
+    nofile-limits: true
+    brew-analytics: false
+    auto-upgrade: true
+    auto-update: true
+
   - type: dnf
     repos:
       # Installing steam through dnf instead of flatpak because it often has
@@ -54,12 +78,7 @@ modules:
           - com.saivert.pwvucontrol
           - com.spotify.Client
           - com.usebottles.bottles
-          - com.valvesoftware.Steam
           - dev.qwery.AddWater
-          - io.github.benjamimgois.goverlay # configure overlay
-          - org.freedesktop.Platform.VulkanLayer.MangoHud//25.08 # overlay
-          - org.freedesktop.Platform.VulkanLayer.gamescope//25.08
-          - org.freedesktop.Platform.VulkanLayer.vkBasalt//25.08 # draws the overlay
           - io.missioncenter.MissionCenter
           - net.lutris.Lutris
           - org.gnome.Boxes
@@ -68,18 +87,6 @@ modules:
           - org.gnome.Extensions
           - org.mozilla.firefox
           - org.openrgb.OpenRGB
-
-  # default-flatpaks doesn't let me change the default permissions
-  # which we need for some things to work
-  - type: script
-    scripts:
-      - openrgb-udev.sh
-
-  - type: brew
-    nofile-limits: true
-    brew-analytics: false
-    auto-upgrade: true
-    auto-update: true
 
   - type: gnome-extensions
     install:
@@ -97,26 +104,14 @@ modules:
       - 4928 # Media Label and Controls (Mpris Label)
       - Another Window Session Manager
 
-  - type: kargs
-    kargs:
-      - pcie_aspm=off
-      - pcie_aspm.policy=performance
-      - pcie_port_pm=off
-      - nvidia_drm.modeset=1
-      - nvidia_drm.fbdev=1
-
-  - type: gschema-overrides
-    include:
-      - zz1-gnome.gschema.override
-
-  - type: fonts
-    fonts:
-      nerd-fonts:
-        - CascadiaCode
-        - Ubuntu
-
   - type: chezmoi
     repository: "https://github.com/BuzzedBizz/dotfiles"
+
+  # default-flatpaks doesn't let me change the default permissions
+  # which we need for some things to work
+  - type: script
+    scripts:
+      - openrgb-udev.sh
 
   # Do I really need to sign things?
   - type: signing
