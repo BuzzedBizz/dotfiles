@@ -1,0 +1,64 @@
+# Managed by chezmoi: `chezmoi edit ~/.gitconfig`.
+# Identity comes from the chezmoi config, prompted once per machine.
+[user]
+    name = {{ .name }}
+    email = {{ .email }}
+
+[init]
+    defaultBranch = main
+
+[alias]
+    ac = !git add -A && git commit
+    a = add
+    s = status
+    d = "!nvim -c DiffviewOpen"
+
+    # not `mergetool`: git ignores aliases that shadow a built-in command.
+    mt = "!nvim -c DiffviewOpen"
+    uncommit = reset --soft "HEAD^"
+    unstage = reset
+
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+    pager = true
+
+[core]
+    excludesfile = ~/.gitignore_global
+    editor = nvim
+    autocrlf = input
+    fileMode = false
+
+[push]
+    autoSetupRemote = true
+
+[fetch]
+    prune = true
+    pruneTags = true
+
+[rerere]
+    enabled = true
+    autoUpdate = true
+
+[diff]
+    tool = nvimdiff
+    guitool = nvimdiff
+    algorithm = histogram
+    colorMoved = zebra
+[difftool]
+    prompt = false
+[difftool "nvimdiff"]
+    path = nvim
+
+[merge]
+    tool = nvimdiff
+    conflictstyle = zdiff3
+[mergetool]
+    prompt = true
+    keepBackup = false
+    trustExitCode = false
+[mergetool "nvimdiff"]
+    path = nvim
+    layout = LOCAL,MERGED,REMOTE
+

@@ -1,0 +1,23 @@
+{{- $xdgRoot := includeTemplate "xdg-root" . -}}
+{{- $tmpDir := includeTemplate "first-root" (dict "roots" .machine.tmpRoots
+                                                  "fallback" (printf "%s/tmp" .chezmoi.homeDir)
+						  "user" .chezmoi.username) -}}
+#!/usr/bin/env bash
+
+# Directories the shell config expects to exist. ~/.zshrc recreates these too,
+# but only for interactive shells
+#
+# ~/.cargo/bin must exist before ~/.zshenv prunes non-existent PATH entries,
+# otherwise `cargo install` binaries are missing until the next new shell.
+#
+# Plain run_ rather than run_onchange_: a constant body would run once ever.
+
+set -euo pipefail
+
+mkdir -p \
+    "${HOME}/.cargo/bin" \
+    {{ $tmpDir | quote }} \
+    {{ joinPath $xdgRoot .xdg.dataHome | quote }} \
+    {{ joinPath $xdgRoot .xdg.stateHome | quote }} \
+    {{ joinPath $xdgRoot .xdg.cacheHome | quote }}
+

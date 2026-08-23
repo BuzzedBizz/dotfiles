@@ -1,0 +1,82 @@
+#!/usr/bin/env zsh
+#
+# The only startup file a non-interactive shel reads, so anything needed by
+# `ssh host 'cmd'`, by a script, or by the top of .zsh goes here
+#
+# Must not rwrite to stdout, and must not fork: this runs for every shell
+
+# ========== Hom directory layout ==========
+# Data, state and cache go on fast local storage where there is any, falling
+# back to $HOME. Probed at runtime rather than rendered in, so the shell stays
+# correct on a machine whose scratch volume appeared or vanished since the
+# last apply.
+#
+# XDG_CONFIG_HOME is not part of this: it tracks the dot_config/ source
+# directory, and configs belong on backed-up storage even where it is slower.
+export XDG_CONFIG_HOME=${HOME}/.config
+
+_xdg_root=
+for _root in {{ range .machine.xdgRoots }}{{ . | quote }} {{ end }}; do
+    [[ -d $_root ]] && { _xdg_root=${_root}/{{ .chezmoi.username }}; break }
+done
+: ${_xdg_root:=${HOME}}
+
+export XDG_DATA_HOME=${_xdg_root}/{{ .xdg.dataHome }}
+export XDG_STATE_HOME=${_xdg_root}/{{ .xdg.stateHome }}
+export XDG_CACHE_HOME=${_xdg_root}/{{ .xdg.cacheHome }}
+
+# Always a private per-user directory. /tmp is only one candidate: it does not
+# exist everywhere.
+_tmp_root=
+for _root in {{ range .machine.tmpRoots }}{{ . | quote }} {{ end }}; do
+    [[ -d $_root ]] && { _tmp_root=${_root}/{{ .chezmoi.username }}; break }
+done
+export TMPDIR=${_xdg_root:-${HOME}/tmp}
+
+unset _xdg_root _tmp_root _root
+
+# ========== Editor ==========
+export EDITOR=nvim
+export VISUAL=nvim
+
+# ========== PATH ==========
+# typeset -U keeps re-sourceing in a nested shell a no-op.
+typeset -U path PATH
+typeset -a _pre _post _keep
+
+_pre=(
+    ${HOME}/.local/bin
+    ${HOME}/.cargo/bin
+)
+
+# Appended, so they can never shadow the system toolchain.
+_post=(
+{{- if .isWSL }}
+    "/mnt/c/Users/{{ .chezmoi.username }}/AppData/Local/Microsoft/WindowsApps"
+    "/mnt/c/Users/{{ .chezmoi.username }}/AppData/Local/Programs/Microsoft VS Code/bin"
+{{- end }}
+)
+
+# A loop over own entries rather than a glob qualifier over all of $path:
+# inherited Windows entries contain glob metacharacters, and stat-ing every
+# /mnt/c path on each shell start is slow.
+for _dir in $_pre;  do [[ -d $_dir ]] && _keep+=("$_dir"); done
+path=($_keep $path)
+
+_keep=()
+for _dir in $_post;  do [[ -d $_dir ]] && _keep+=("$_dir"); done
+path+=($_keep)
+
+unset _pre _post _keep _dir
+
+
+
+
+
+
+
+
+
+
+
+

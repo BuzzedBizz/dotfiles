@@ -1,0 +1,5 @@
+{{- /* Directory that XDG_{DATA,STATE,CACHE}_HOME hang off, resolved at apply
+       time. dot_zshenv.tmpl repeats the probe at runtime instead. */ -}}
+{{- includeTemplate "first-root" (dict "roots" .machine.xdgRoots
+                                       "fallback" .chezmoi.homeDir
+				       "user" .chezmoi.username) -}}

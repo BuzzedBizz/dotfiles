@@ -1,0 +1,10 @@
+machine:
+  xdgRoots: []
+
+  tmpRoots:
+    - /tmp
+
+xdg:
+  dataHome: .local/share
+  stateHome: .local/state
+  cacheHome: .local/cache

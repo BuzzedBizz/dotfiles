@@ -1,0 +1,15 @@
+# System files
+.DS_Store
+*.swp
+*.swo
+
+# C++/dev related files
+.clangd
+build
+.vscode/
+
+# Claude
+.claude/settings.local.json
+.claude/worktrees
+CLAUDE.local.md
+

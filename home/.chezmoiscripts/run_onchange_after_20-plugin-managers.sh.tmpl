@@ -1,0 +1,51 @@
+{{- /* Destinations are resolved here rather than in the bode: this can run
+       before any shell config has loaded, so $XDG_* may not be set. */ -}}
+{{- $xdgRoot     := includeTemplate "xdg-root" . -}}
+{{- $tpmDir      := joinPath .chezmoi.homeDir ".config" "tmux" "plugins" "tpm" -}}
+{{- $antidoteDir := joinPath $xdgRoot .xdg.cacheHome "antidote" -}}
+{{- $lazyDir     := joinPath $xdgRoot .xdg.dataHome "nvim" "lazy" "lazy.nvim" -}}
+#!/usr/bin/env bash
+
+# Clone the plugin managers. zsh, tmux and nvim all assume these exist
+# rather than bootstrapping it themselves
+#
+# This will be re-applied on every chezmoi apply
+# It doesn't get automatically done
+#
+
+set -euo pipefail
+
+# clone_if_missing <name> <destination> [git clone options...] [url]
+clone_if_missing() {
+    local name=$1 dest=$2
+    shift 2
+
+    if [ -d "${dest}/.git" ]; then
+        echo "${name}: already present"
+	return 0
+    fi
+
+    # No .git means a partial or half-cleared clone. Start over.
+    if [ -e "$dest" ]; then
+        echo "${name}: removing incomplete ${dest}"
+	rm -rf "$dest"
+    fi
+
+    echo "${name}: cloning into ${dest}"
+    mkdir -p "$(dirname "$dest")"
+    # advice.detachedHead is off beacuse lazy.nvim is cloned at a tag
+    git -c advice.detachedHead=false clone --quiet "$@" "$dest"
+}
+
+clone_if_missing tmux/tpm {{ $tpmDir | quote }} \
+    --depth=1 \
+    https://github.com/tmux-plugins/tpm.git
+
+clone_if_missing antidote {{ $antidoteDir | quote }} \
+    --depth=1 \
+    https://github.com/mattmc3/antidote.git
+
+clone_if_missing lazy.nvim {{ $lazyDir | quote }} \
+    --filter=blob:none --branch=stable \
+    https://github.com/folke/lazy.nvim.git
+

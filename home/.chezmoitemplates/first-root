@@ -1,0 +1,12 @@
+{{- /* First existing directory in .roots with .user append, else .fallback.
+         includeTemplate "first-root" (dict "roots" .machine.tmpRoots
+	                                    "fallback" .chezmoi.homeDir
+					    "user" .chezmoi.username) */ -}}
+{{- $picked := "" -}}
+{{- range .roots -}}
+{{-   if and (not $picked) (stat .) -}}
+{{-     $picked = printf "%s/%s" . $.user -}}
+{{-   end -}}
+{{- end -}}
+{{- if not $picked -}}{{- $picked = .fallback -}}{{- end -}}
+{{- $picked -}}

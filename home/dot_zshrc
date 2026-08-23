@@ -1,0 +1,105 @@
+#!/usr/bin/env zsh
+#
+# Interactive setup. XDG, TMPDIR, PATH, and EDITOR are in ~/.zshenv,
+# which zsh sources first
+
+if [[ -z ${XDG_CACHE_HOME} ]]; then
+    print -u2 "~/.zshenv did not run: XDG paths are unset. Run: chezmoi apply"
+    export XDG_CONFIG_HOME="${HOME}/.config"
+    export XDG_DATA_HOME="${HOME}/.local/share"
+    export XDG_STATE_HOME="${HOME}/.local/state"
+    export XDG_CACHE_HOME="${HOME}/.local/cache"
+    export TMPDIR="${TMPDIR:-${HOME}/tmp}"
+fi
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (passwoord prompts, [y/n]
+# confiremation, etc.) must go above this block, everything else may go below.
+if [[ -r "${XDG_CACHE_HOME}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+ZSH_CONFIG_DIR="${XDG_CONFIG_HOME}/zsh"
+
+# nullglob is deliberately not set: globally it turns a non-matching glob
+# into silence (`ls * nothing` becomes a bare `ls`). Globs that may match
+# nothing use the (N) qualifer instead
+setopt extended_glob
+
+# Set DEBUG_PRINT=1 to trace startup.
+debug_print() {
+    [[ -n ${DEBUG_PRINT:#(0|false|no|off)} ]] && printf '%s\n' "$1"
+    return 0
+}
+
+# Windows terminal supports truecolor but doesn't advertise it.
+# https://github.com/microsoft/terminal/issues/11057
+export COLORTERM=truecolor
+
+# The scratch and temp volumes get wiped, so recreate rather than assume.
+mkdir -p "${TPMDIR}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}" "${XDG_CACHE_HOME}"
+
+# Numbered because order matters: history styles must be set before antidote
+# loads zephyr's history plugin
+for _rc in "${ZSH_CONFIG_DIR}"/rc.d/*.zsh(N.on); do
+    debug_print "Loading zsh setup file ${_rc}"
+    source "${_rc}"
+done
+unset _rc
+
+# Extra machine-local setup Sourced after rc.d so it can override an alias, a
+# PATH entry or an exported variable.
+if [[ -r ~/.localrc ]]; then
+    source ~/.localrc
+fi
+
+# Antidote is cloned by .chezmoiscripts/run_onchange_after_20-plugin-managers.sh.
+if [ -r "${XDG_CACHE_HOME}/antidote/antidote.zsh" ]; then
+    debug_print "Initializing Antidote"
+    source ${XDG_CACHE_HOME}/antidote/antidote.zsh
+    antidote load "${ZSH_CONFIG_DIR}/zsh_plugins.txt" "${XDG_CACHE_HOME}/zsh_plugins.zsh"
+else
+    print -u2 "antidote is missing from ${XDG_CACHE_HOME}/antidote - run: chezmoi apply"
+fi
+
+# Rebuild the completion dump at most once a day: -C alon reuses the cache
+# forever, so a newly installed tool would never gain completions.
+autoload -Uz compinit
+_zcompdump="${XDG_CACHE_HOME}/zsh/zcompdump"
+mkdir -p "${_zcompdump:h}"
+if [[ -n ${_zcompdump}(#qN.mh-24) ]]; then
+    compinit -C -d "$_zcompdump"   # fresh enough, skip the security check
+else
+    compinit -d "$_zcompdump"
+fi
+unset _zcompdump
+
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME}/zsh/cache"
+
+# fzf keybindings, most importantly Ctrl-R. After rc.d/10-history.zsh so fzf
+# wins the binding, and after compinit so its completions register.
+#
+# `fzf --zsh` is the supported entry point from 0.48 on; the shipped example
+# files are the older mechanisem and are being dropped from distro packages.
+if (( ${+commands[fzf]} )) && _fzf=$(fzf --zsh 2>/dev/null) && [[ -n ${_fzf} ]]; then
+    eval "${_fzf}"
+else
+    # TODO put these into my dotfiles repo
+    for _fzf in /usr/share/doc/examples /usr/share/fzf /usr/share/fzf/shell; do
+        if [[ -r ${_fzf}/key-bindings.zsh ]]; then
+            source "${_fzf}/key-bindings.zsh"
+            [[ -r ${_fzf}/completion.zsh ]] && source "${_fzf}/completion.zsh"
+            break
+        fi
+    done
+fi
+unset _fzf
+
+# Avoid zsh search $PATH for every command. Here because some plugins
+# (e.g. zsh-completions) re-enable it.
+unsetopt pathdirs
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh
+[[ ! -r ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
