@@ -58,6 +58,7 @@ modules:
         - ripgrep
         - rustup
         - steam
+        - tree-sitter-cli
         - zsh
     remove:
       packages:
