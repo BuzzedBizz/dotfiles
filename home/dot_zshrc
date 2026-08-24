@@ -37,7 +37,7 @@ debug_print() {
 export COLORTERM=truecolor
 
 # The scratch and temp volumes get wiped, so recreate rather than assume.
-mkdir -p "${TPMDIR}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}" "${XDG_CACHE_HOME}"
+mkdir -p "${TMPDIR}" "${XDG_DATA_HOME}" "${XDG_STATE_HOME}" "${XDG_CACHE_HOME}"
 
 # Numbered because order matters: history styles must be set before antidote
 # loads zephyr's history plugin

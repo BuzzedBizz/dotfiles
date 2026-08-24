@@ -9,7 +9,7 @@ if [[ -n ${TMUX} ]]; then
 
     tmux_env_update() {
         (( EPOCHSECONDS - _tmux_env_checked < 10 )) && return 0
-        _tmux_env_checked=/${EPOCHSECONDS}
+        _tmux_env_checked=${EPOCHSECONDS}
 
         # -g is the global environment, which is what tmux updates on attach.
         # it prints "-DISPLAY" when unset, so only act on a real assignment.

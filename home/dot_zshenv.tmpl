@@ -31,7 +31,7 @@ _tmp_root=
 for _root in {{ range .machine.tmpRoots }}{{ . | quote }} {{ end }}; do
     [[ -d $_root ]] && { _tmp_root=${_root}/{{ .chezmoi.username }}; break }
 done
-export TMPDIR=${_xdg_root:-${HOME}/tmp}
+export TMPDIR=${_tmp_root:-${HOME}/tmp}
 
 unset _xdg_root _tmp_root _root
 
