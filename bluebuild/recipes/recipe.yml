@@ -47,9 +47,11 @@ modules:
       packages:
         - cargo
         - gamescope
+        - ifuse
         - kernel-modules-extra
         - kitty
         - libgtop2-devel
+        - libimobiledevice-utils
         - lm_sensors
         - mangohud
         - neovim
