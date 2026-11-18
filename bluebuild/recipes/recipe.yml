@@ -4,7 +4,7 @@ name: os-image
 description: Custom fedora atomic image
 
 base-image: ghcr.io/blue-build/base-images/fedora-silverblue-nvidia-open
-image-version: 44
+image-version: 45
 
 modules:
   - type: files
@@ -42,6 +42,8 @@ modules:
       # version incompatiblities with the system mesa and the flatpak mesa
       # This causes steam and games to render with llvmpipe
       nonfree: negativo17
+      copr:
+        - pvermeer/sunshine
     install:
       install-weak-deps: false
       packages:
@@ -60,6 +62,7 @@ modules:
         - ripgrep
         - rustup
         - steam
+        - sunshine
         - tree-sitter-cli
         - zsh
     remove:
@@ -96,7 +99,6 @@ modules:
       - 779 # Clipboard Indicator
       - Blur my Shell
       - Burn My Windows
-      - Display Configuration Switcher
       - Just Perfection
       - Vitals
       - Quick Settings Audio Devices Hider
@@ -106,6 +108,7 @@ modules:
     install:
       - 4928 # Media Label and Controls (Mpris Label)
       - Another Window Session Manager
+      - Display Configuration Switcher
 
   - type: chezmoi
     repository: "https://github.com/BuzzedBizz/dotfiles"
